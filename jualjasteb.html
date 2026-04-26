@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Page - Jasteb Vip</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-image: url('https://files.catbox.moe/bepl7n.jpg'); background-size: cover; background-position: center; background-attachment: fixed; margin: 0; padding: 0; display: flex; justify-content: center; min-height: 100vh; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 15, 30, 0.75); z-index: 0; }
+        .container { width: 100%; max-width: 480px; background: rgba(255, 255, 255, 0.98); min-height: 100vh; display: flex; flex-direction: column; position: relative; z-index: 1; box-shadow: 0 0 60px rgba(0,0,0,0.6); }
+        .header { background: linear-gradient(135deg, #4f46e5 0%, #7e22ce 100%); padding: 45px 20px; text-align: center; color: white; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; }
+        .content { padding: 30px 20px; flex-grow: 1; }
+        .section-title { font-weight: 700; font-size: 19px; margin-bottom: 25px; color: #111827; border-left: 6px solid #4f46e5; padding-left: 12px; }
+        .paket-list { display: flex; flex-direction: column; gap: 15px; }
+        .paket-card { border: 2px solid #e5e7eb; border-radius: 20px; padding: 18px; text-align: center; cursor: pointer; transition: 0.3s; background: white; }
+        .paket-card.active { border-color: #4f46e5; background: #f0f9ff; box-shadow: 0 0 0 3px #4f46e5; }
+        .paket-title { font-size: 24px; font-weight: 800; color: #4338ca; }
+        .form-section { margin-top: 35px; }
+        .label { font-weight: 700; font-size: 14px; color: #111827; margin-bottom: 8px; display: block; margin-top: 15px;}
+        input, textarea { width: 100%; padding: 15px; border: 2px solid #f3f4f6; border-radius: 15px; box-sizing: border-box; background: #f9fafb; font-family: inherit; font-size: 14px; }
+        .rating-box { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
+        .star { font-size: 35px; cursor: pointer; color: #d1d5db; transition: 0.2s; }
+        .star.selected { color: #fbbf24; }
+        .btn-submit { width: 100%; padding: 20px; background: #cbd5e1; color: white; border: none; border-radius: 18px; font-weight: 800; font-size: 16px; margin-top: 25px; cursor: not-allowed; transition: 0.3s; }
+        .btn-submit.active { background: #111827; cursor: pointer; }
+        .review-item { background: white; padding: 15px; border-radius: 18px; margin-bottom: 12px; border: 1px solid #f3f4f6; }
+        .review-header { font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; }
+        .stars-static { color: #fbbf24; }
+        .footer { padding: 40px 20px; text-align: center; font-size: 12px; color: #9ca3af; background: #f1f5f9; }
+        .footer a { color: #4f46e5; text-decoration: none; font-weight: 700; }
+        .qris-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.92); z-index: 9999; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: white; padding: 30px; border-radius: 35px; width: 100%; max-width: 400px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header"><h1>Website Order</h1><p>Jasteb Vip • Official Store</p></div>
+        <div class="content">
+            <div class="section-title">📦 Pilih Paket Result</div>
+            <div class="paket-list">
+                <div class="paket-card" onclick="selectPkg(this, 2000, '50 Result')"><div class="paket-title">50</div><div>Rp 2.000</div></div>
+                <div class="paket-card" onclick="selectPkg(this, 5000, '70 Result')"><div class="paket-title">70</div><div>Rp 5.000</div></div>
+                <div class="paket-card" onclick="selectPkg(this, 10000, '110 Result')"><div class="paket-title">110</div><div>Rp 10.000</div></div>
+                <div class="paket-card" onclick="selectPkg(this, 15000, '160 Result')"><div class="paket-title">160</div><div>Rp 15.000</div></div>
+                <div class="paket-card" onclick="selectPkg(this, 20000, '210 Result')"><div class="paket-title">210</div><div>Rp 20.000</div></div>
+                <div class="paket-card" onclick="selectPkg(this, 25000, '260 Result')"><div class="paket-title">260</div><div>Rp 25.000</div></div>
+                <div class="paket-card" onclick="selectPkg(this, 30000, '310 Result')"><div class="paket-title">310</div><div>Rp 30.000</div></div>
+                <div class="paket-card" onclick="selectPkg(this, 35000, '380 Result')"><div class="paket-title">380</div><div>Rp 35.000</div></div>
+                <div class="paket-card" onclick="selectPkg(this, 50000, '600 Result')"><div class="paket-title">600</div><div>Rp 50.000</div></div>
+            </div>
+            <div class="form-section">
+                <label class="label">📧 GMAIL ANDA</label>
+                <input type="email" id="userEmail" placeholder="nama@email.com" oninput="validateForm()">
+                <label class="label">⭐ KASIH RATING & TESTIMONI</label>
+                <div class="rating-box">
+                    <span class="star" onclick="setRating(1)">★</span><span class="star" onclick="setRating(2)">★</span><span class="star" onclick="setRating(3)">★</span><span class="star" onclick="setRating(4)">★</span><span class="star" onclick="setRating(5)">★</span>
+                </div>
+                <textarea id="userComment" rows="2" placeholder="Testimoninya jangan lupa..."></textarea>
+            </div>
+            <button id="btnSubmit" class="btn-submit" onclick="openPayment()">⚡ BELI SEKARANG</button>
+            <div id="reviewList" style="margin-top:40px;">
+                <div class="section-title">💬 Review Pembeli</div>
+            </div>
+        </div>
+        <div class="footer">&copy; Since 2023 • <a href="https://lynk.id/tomstoretokosab">Tom Store</a></div>
+    </div>
+
+    <div id="qrisModal" class="qris-modal">
+        <div class="modal-content">
+            <h3 style="margin-top:0;">PEMBAYARAN QRIS</h3>
+            <img src="https://files.catbox.moe/b6yegr.jpg" style="width:100%; border-radius:20px; margin-bottom:20px;">
+            <p style="font-size:12px; color:#64748b; margin-bottom:15px;">Scan QR di atas, lalu klik tombol di bawah untuk kirim bukti ke Admin WA.</p>
+            <a id="waLink" href="#" target="_blank" onclick="finishOrder()" style="background:#16a34a; color:white; padding:18px; display:block; border-radius:18px; text-decoration:none; font-weight:800; font-size:16px;">SAYA SUDAH BAYAR</a>
+            <button onclick="document.getElementById('qrisModal').style.display='none'" style="margin-top:15px; border:none; background:none; color:#9ca3af; cursor:pointer;">Batal</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedPrice = 0, selectedPaket = "", currentRating = 0;
+        function setRating(n) { currentRating = n; document.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('selected', i < n)); validateForm(); }
+        function selectPkg(el, price, name) { document.querySelectorAll('.paket-card').forEach(c => c.classList.remove('active')); el.classList.add('active'); selectedPrice = price; selectedPaket = name; validateForm(); }
+        function validateForm() { const email = document.getElementById('userEmail').value; document.getElementById('btnSubmit').classList.toggle('active', email.includes('@') && selectedPrice > 0); }
+        
+        function openPayment() {
+            const email = document.getElementById('userEmail').value;
+            if (!email.includes('@') || selectedPrice === 0) return;
+            const starStr = currentRating > 0 ? "★".repeat(currentRating) : "No Rating";
+            const comment = document.getElementById('userComment').value || "-";
+            const msg = encodeURIComponent(`Halo Admin! Saya sudah bayar.\n\n📧 Email: ${email}\n📦 Paket: ${selectedPaket}\n⭐ Rating: ${starStr}\n💬 Komentar: ${comment}`);
+            document.getElementById('waLink').href = `https://wa.me/6285697398584?text=${msg}`;
+            document.getElementById('qrisModal').style.display = 'flex';
+        }
+
+        function finishOrder() {
+            const email = document.getElementById('userEmail').value;
+            const comment = document.getElementById('userComment').value || "Mantap!";
+            const starStr = currentRating > 0 ? "★".repeat(currentRating) : "★★★★★";
+            const userMasked = email.split('@')[0].substring(0,3) + "***";
+            const newReview = { user: userMasked, fullEmail: email, stars: starStr, text: comment };
+            let reviews = JSON.parse(localStorage.getItem('webReviews') || '[]');
+            reviews.unshift(newReview);
+            localStorage.setItem('webReviews', JSON.stringify(reviews));
+            document.getElementById('qrisModal').style.display = 'none';
+        }
+
+        function renderReviews() {
+            const list = document.getElementById('reviewList');
+            let reviews = JSON.parse(localStorage.getItem('webReviews') || '[]');
+            reviews.forEach(r => {
+                const item = document.createElement('div');
+                item.className = 'review-item';
+                item.innerHTML = `<div class="review-header">${r.user} <span class="stars-static">${r.stars}</span></div><div style="font-size:12px; color:#64748b; margin-top:5px;">"${r.text}"</div>`;
+                list.appendChild(item);
+            });
+        }
+        window.onload = renderReviews;
+    </script>
+</body>
+</html>
